@@ -1,6 +1,8 @@
 Insert Unicode char similar to `insert-char` command, but with character preview in completion
 prompt.
 
+For better results use [counsel](https://github.com/abo-abo/swiper).
+
 ![screenshot](screenshot.png)
 
 ## Installation
