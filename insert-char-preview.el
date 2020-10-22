@@ -33,19 +33,27 @@
 
 (require 'ht)
 
+(defgroup insert-char-preview nil
+  "Insert Unicode char interactively with preview"
+  :group  'text
+  :tag    "Insert Char Preview"
+  :prefix "insert-char-preview-"
+  :link   '(url-link :tag "GitLab" "https://gitlab.com/matsievskiysv/insert-char-preview"))
+
 (defcustom insert-char-preview-format "%x(%s) %s"
   "Format string.  Arguments are: number, char, name."
   :tag  "Preview format"
   :type 'string)
 
-(setq insert-char-preview--table
+(defvar insert-char-preview--table
       (let ((h (ht-create)))
         (maphash (lambda (k v)
                    (ht-set h (format insert-char-preview-format
                                      v (string v) k)
                            v))
                  (ucs-names))
-        h))
+        h)
+      "Character hash table.")
 
 (defun insert-char-preview (COUNT CHARACTER)
   "Insert COUNT copies of CHARACTER.
