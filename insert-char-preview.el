@@ -55,13 +55,14 @@
         h)
       "Character hash table.")
 
+;;;###autoload
 (defun insert-char-preview (COUNT CHARACTER)
   "Insert COUNT copies of CHARACTER.
 Similar to `insert-char` in interactive mode, but with char preview."
   (interactive (list current-prefix-arg
                      (completing-read "Insert character: "
                                       insert-char-preview--table)))
-  (insert-char (ht-get insert-char-preview--table CHARACTER "?") COUNT))
+  (insert-char (ht-get insert-char-preview--table CHARACTER (string-to-char "?")) COUNT))
 
 (provide 'insert-char-preview)
 
