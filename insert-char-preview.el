@@ -3,7 +3,7 @@
 ;; Author: Matsievskiy S.V.
 ;; Maintainer: Matsievskiy S.V.
 ;; Version: 0.1
-;; Package-Requires: ((emacs "24.1") (ht "2.2"))
+;; Package-Requires: ((emacs "24.1"))
 ;; Homepage: https://gitlab.com/matsievskiysv/insert-char-preview
 ;; Keywords: convenience
 
@@ -31,11 +31,9 @@
 
 ;;; Code:
 
-(require 'ht)
-
 (defgroup insert-char-preview nil
   "Insert Unicode char interactively with preview"
-  :group  'text
+  :group  'i18n
   :tag    "Insert Char Preview"
   :prefix "insert-char-preview-"
   :link   '(url-link :tag "GitLab" "https://gitlab.com/matsievskiysv/insert-char-preview"))
@@ -46,11 +44,11 @@
   :type 'string)
 
 (defvar insert-char-preview--table
-      (let ((h (ht-create)))
+      (let ((h (make-hash-table :test 'equal :size (hash-table-size (ucs-names)))))
         (maphash (lambda (k v)
-                   (ht-set h (format insert-char-preview-format
+                   (puthash (format insert-char-preview-format
                                      v (string v) k)
-                           v))
+                           v h))
                  (ucs-names))
         h)
       "Character hash table.")
@@ -62,7 +60,7 @@ Similar to `insert-char` in interactive mode, but with char preview."
   (interactive (list current-prefix-arg
                      (completing-read "Insert character: "
                                       insert-char-preview--table)))
-  (insert-char (ht-get insert-char-preview--table CHARACTER (string-to-char "?")) COUNT))
+  (insert-char (gethash CHARACTER insert-char-preview--table ??) COUNT))
 
 (provide 'insert-char-preview)
 
