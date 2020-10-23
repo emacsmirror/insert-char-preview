@@ -44,14 +44,15 @@
   :type 'string)
 
 (defvar insert-char-preview--table
-      (let ((h (make-hash-table :test 'equal :size (hash-table-size (ucs-names)))))
-        (maphash (lambda (k v)
-                   (puthash (format insert-char-preview-format
-                                     v (string v) k)
-                           v h))
-                 (ucs-names))
-        h)
-      "Character hash table.")
+  (let* ((orig-names (ucs-names))
+         (h (make-hash-table :test 'equal :size (hash-table-size orig-names))))
+    (maphash (lambda (k v)
+               (puthash (format insert-char-preview-format
+                                v (string v) k)
+                        v h))
+             orig-names)
+    h)
+  "Character hash table.")
 
 ;;;###autoload
 (defun insert-char-preview (COUNT CHARACTER)
